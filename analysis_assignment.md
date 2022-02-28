@@ -69,7 +69,7 @@ library(pheatmap)
 download_study(project="SRP043008")
 ```
 
-    ## 2022-02-26 23:25:21 downloading file rse_gene.Rdata to SRP043008
+    ## 2022-02-27 19:55:47 downloading file rse_gene.Rdata to SRP043008
 
 ``` r
 load(file.path("SRP043008", "rse_gene.Rdata"))
@@ -764,8 +764,18 @@ significance.
 - The paper included batch as a covariate in the linear model.  
 - The paper used q-values instead of fdr/BH.
 
-Answer: Overall, the DE results obtained by Li et al. have lower
-p-values than those obtained in this analysis. Possible reasons for the
-discrepancies: The paper looks at DE genes for each time point, more
-like a simple effect, but in this analysis, we look at the overall
-effect across the entire time points.
+Answer: Li et al. have multiple lists of differentially expressed genes
+unlike in this analysis where we have just one list. Also, for each
+comparison in the paper, there are far less genes that passed the
+q-value cut-off.
+
+Possible reasons for the discrepancies:
+
+-   The paper generated DE genes for each time point, more like a simple
+    effect, but in this analysis, we look at the overall effect of
+    infection status across the entire time points(hpi) as continuous.
+-   The paper included an added layer of filter when defining
+    significance: q-value \< 0.05 and a log2 fold change > 1
+-   The paper adjusts for uninfected (mock infection) by subtracting
+    counts (Infected-Non infected) instead of including infection status
+    as a covariate.
