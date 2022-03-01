@@ -69,7 +69,7 @@ library(pheatmap)
 download_study(project="SRP043008")
 ```
 
-    ## 2022-02-28 16:15:44 downloading file rse_gene.Rdata to SRP043008
+    ## 2022-02-28 16:44:31 downloading file rse_gene.Rdata to SRP043008
 
 ``` r
 load(file.path("SRP043008", "rse_gene.Rdata"))
@@ -778,6 +778,7 @@ Possible reasons for the discrepancies:
     continuous).
 -   The paper corrected for multiple testing using q-value but we
     adjusted using fdr.
--   The paper adjusts for uninfected (mock infection) by subtracting
-    counts (Infected-Non infected) instead of including infection status
+-   The paper adjusts for natural changes in gene expression in
+    uninfected by subtracting normalized-log2-transformed expression
+    values (Infected - uninfected) instead of including infection status
     as a covariate.
