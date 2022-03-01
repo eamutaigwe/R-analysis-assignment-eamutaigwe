@@ -69,7 +69,7 @@ library(pheatmap)
 download_study(project="SRP043008")
 ```
 
-    ## 2022-02-28 19:05:45 downloading file rse_gene.Rdata to SRP043008
+    ## 2022-02-28 22:48:28 downloading file rse_gene.Rdata to SRP043008
 
 ``` r
 load(file.path("SRP043008", "rse_gene.Rdata"))
@@ -533,7 +533,7 @@ long_log2cpm_dat[str_detect(long_log2cpm_dat$id, "ENSG00000089127") == TRUE,] %>
 
 Answer: Yes
 
-I observe that there is a significant difference in gene expression
+I observed that there is a significant difference in gene expression
 between infected and uninfected samples with increase in hours post
 infection. As hours post infection increases from 4h to 72h, the
 difference in expression of OAS gene between infected and uninfected
