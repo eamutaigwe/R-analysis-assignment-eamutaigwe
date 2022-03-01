@@ -204,7 +204,7 @@ dge$samples <- dge$samples %>%
 dge <- calcNormFactors(dge, method = "TMM")
 ```
 
-The calcNormFactors function automatically adds a column containing normalization factor values to the sample data frame slot.
+The calcNormFactors function automatically adds a column containing normalization factor values to the sample slot.
 
 
 - Examine the distribution of gene expression on the scale of $\sf{log_{2}}$ CPM across all samples using box plots (with samples on the x-axis and expression on the y-axis). Hint 1: Add a small pseudo count (e.g. 1) before taking the log2 transformation to avoid taking log of zero. Hint 2: To get the data in a format amenable to plotting, some data manipulation steps are required. Take a look at the `pivot_longer` function in the tidyr package.
@@ -280,7 +280,7 @@ long_log2cpm_dat[str_detect(long_log2cpm_dat$id, "ENSG00000089127") == TRUE,] %>
   
   # Plot the gene expression information by hours post infection
   ggplot(aes(hpi, log2cpm, colour = Infected)) +
-    geom_point() +
+    geom_jitter(width = 0.9) +
     geom_smooth(method = "lm", se = FALSE) +
     labs(title = "Expression pattern for OAS gene by hours post infection", x = "Hours post infection", y = "Expression(Log2(CPM + 1))" )
  
@@ -372,7 +372,7 @@ The linear model was fitted using the precision weights, and the mean-variance t
 
 ```{r}
 # your code here
-signif(topTable(lm_voom, number = 10, coef = "hpi:InfectedY", sort.by = "p") ,3)
+signif(topTable(lm_voom, number = 10, coef = "hpi:InfectedY", sort.by = "P") ,3)
 ```
 These are genes where the effect of infection status is significantly different at different hours post infection.
 
@@ -384,13 +384,13 @@ These are genes where the effect of infection status is significantly different 
 # your code here
 # Extract the coefficient of the hpi term
 (CDC20 <- as.data.frame(lm_voom$coefficients) %>% 
-  rownames_to_column("gene_id") %>% 
-  filter(grepl("ENSG00000117399", gene_id))) %>% 
-  select("gene_id", "hpi")
+          rownames_to_column("gene_id") %>% 
+          filter(grepl("ENSG00000117399", gene_id))) %>% 
+          select("gene_id", "hpi")
 
 ```
 
-The numeric value of the coefficient of the hpi term is -0.06861885. It represents the slope of the reference line - uninfected. That is, it is the expected change in gene expression in uninfected samples for every unit increase in hours post infection. The negative sign shows that the CDC20 gene is down-regulated in uninfected samples as hours post infection increases from 4hr to 72hr. It has no direct interpretation for infected samples.
+The numeric value of the coefficient of the hpi term is -0.06861885. It represents the slope of the reference line: uninfected. That is, it is the expected change in gene expression in uninfected samples for every unit increase in hours post infection. The negative sign shows that the CDC20 gene is down-regulated in uninfected samples as hours post infection increases from 4hr to 72hr. It has no direct interpretation for infected samples.
 
     
 ### Question 9: Quantify the number of genes differentially expressed (3 POINTS)
@@ -427,11 +427,11 @@ Many possible explanations for discrepancies, including:
   - The paper included batch as a covariate in the linear model.  
   - The paper used q-values instead of fdr/BH.  
 
-Answer: Li et al. have multiple lists of differentially expressed genes unlike in this analysis where we have just one list. Also, for each comparison in the paper, there are far less genes that passed the q-value cut-off.
+Answer: Li et al. have multiple lists of differentially expressed genes unlike in this analysis where we have just one list. Also, in the paper, the total number of differentially expressed genes in all categories before and after log2fold change filter is higher than the total number in our analysis.
 
 Possible reasons for the discrepancies:
 
-+ The paper generated DE genes for each time point, more like a simple effect, but in this analysis, we look at the overall effect of infection status across the entire time points(hpi) as continuous.
-+ The paper included an added layer of filter when defining significance: q-value < 0.05 and a log2 fold change > 1
++ The paper generated DE genes for each time point separately, more like a simple effect, but in this analysis, we look at the overall effect of infection status across the entire time points(hpi as continuous).
++ The paper corrected for multiple testing using q-value but we adjusted using fdr.
 + The paper adjusts for uninfected (mock infection) by subtracting counts (Infected-Non infected) instead of including infection status as a covariate.
 
