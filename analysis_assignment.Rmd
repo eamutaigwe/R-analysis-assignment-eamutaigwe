@@ -290,7 +290,7 @@ long_log2cpm_dat[str_detect(long_log2cpm_dat$id, "ENSG00000089127") == TRUE,] %>
 
 Answer: Yes 
 
-I observe that there is a significant difference in gene expression between infected and uninfected samples with increase in hours post infection. As hours post infection increases from 4h to 72h, the difference in expression of OAS gene between infected and uninfected samples increases. Also, in uninfected samples only, as hours increase, there is negligible change in OAS gene expression. However as hours post infection increases in infected samples, the gene expression also increases. This shows there's an interaction between infection status and hours post infection.
+I observed that there is a significant difference in gene expression between infected and uninfected samples with increase in hours post infection. As hours post infection increases from 4h to 72h, the difference in expression of OAS gene between infected and uninfected samples increases. Also, in uninfected samples only, as hours increase, there is negligible change in OAS gene expression. However as hours post infection increases in infected samples, the gene expression also increases. This shows there's an interaction between infection status and hours post infection.
 
 Biologically, in humans, the OAS gene functions in immune response to infection. So, as the hours post infection increases and as the parasite undergoes rapid multiplication in the course of its life cycle into the adult stage, it triggers the host's immune response leading to increase in transcription of this OAS gene. 
 
