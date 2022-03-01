@@ -433,5 +433,4 @@ Possible reasons for the discrepancies:
 
 + The paper generated DE genes for each time point separately, more like a simple effect, but in this analysis, we look at the overall effect of infection status across the entire time points(hpi as continuous).
 + The paper corrected for multiple testing using q-value but we adjusted using fdr.
-+ The paper adjusts for uninfected (mock infection) by subtracting counts (Infected-Non infected) instead of including infection status as a covariate.
-
++ The paper adjusts for natural changes in gene expression in uninfected by subtracting normalized-log2-transformed expression values (Infected - uninfected) instead of including infection status as a covariate.
