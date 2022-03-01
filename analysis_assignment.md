@@ -69,7 +69,7 @@ library(pheatmap)
 download_study(project="SRP043008")
 ```
 
-    ## 2022-02-28 16:44:31 downloading file rse_gene.Rdata to SRP043008
+    ## 2022-02-28 19:05:45 downloading file rse_gene.Rdata to SRP043008
 
 ``` r
 load(file.path("SRP043008", "rse_gene.Rdata"))
@@ -573,7 +573,6 @@ annot_cols <- list(
 # Plot a heatmap
 pheatmap(dat, color = hcols,
          border_color = NA,
-         cluster_cols = T, cluster_rows = T,
          annotation_col = data.frame(row.names = colnames(dat),
                                      Batch = dge$samples$Batch,
                                      Hours_post_infection = dge$samples$hpi,
