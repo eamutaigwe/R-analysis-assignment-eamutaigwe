@@ -69,7 +69,7 @@ library(pheatmap)
 download_study(project="SRP043008")
 ```
 
-    ## 2022-02-27 19:55:47 downloading file rse_gene.Rdata to SRP043008
+    ## 2022-02-28 16:15:44 downloading file rse_gene.Rdata to SRP043008
 
 ``` r
 load(file.path("SRP043008", "rse_gene.Rdata"))
@@ -421,7 +421,7 @@ dge <- calcNormFactors(dge, method = "TMM")
 ```
 
 The calcNormFactors function automatically adds a column containing
-normalization factor values to the sample data frame slot.
+normalization factor values to the sample slot.
 
 -   Examine the distribution of gene expression on the scale of
     $\\sf{log\_{2}}$ CPM across all samples using box plots (with
@@ -518,7 +518,7 @@ long_log2cpm_dat[str_detect(long_log2cpm_dat$id, "ENSG00000089127") == TRUE,] %>
   
   # Plot the gene expression information by hours post infection
   ggplot(aes(hpi, log2cpm, colour = Infected)) +
-    geom_point() +
+    geom_jitter(width = 0.9) +
     geom_smooth(method = "lm", se = FALSE) +
     labs(title = "Expression pattern for OAS gene by hours post infection", x = "Hours post infection", y = "Expression(Log2(CPM + 1))" )
 ```
@@ -665,7 +665,7 @@ mean-variance trend has now disappeared, assuming a constant variance.
 
 ``` r
 # your code here
-signif(topTable(lm_voom, number = 10, coef = "hpi:InfectedY", sort.by = "p") ,3)
+signif(topTable(lm_voom, number = 10, coef = "hpi:InfectedY", sort.by = "P") ,3)
 ```
 
     ##                     logFC AveExpr    t  P.Value adj.P.Val    B
@@ -693,16 +693,16 @@ different at different hours post infection.
 # your code here
 # Extract the coefficient of the hpi term
 (CDC20 <- as.data.frame(lm_voom$coefficients) %>% 
-  rownames_to_column("gene_id") %>% 
-  filter(grepl("ENSG00000117399", gene_id))) %>% 
-  select("gene_id", "hpi")
+          rownames_to_column("gene_id") %>% 
+          filter(grepl("ENSG00000117399", gene_id))) %>% 
+          select("gene_id", "hpi")
 ```
 
     ##              gene_id         hpi
     ## 1 ENSG00000117399.13 -0.06861885
 
 The numeric value of the coefficient of the hpi term is -0.06861885. It
-represents the slope of the reference line - uninfected. That is, it is
+represents the slope of the reference line: uninfected. That is, it is
 the expected change in gene expression in uninfected samples for every
 unit increase in hours post infection. The negative sign shows that the
 CDC20 gene is down-regulated in uninfected samples as hours post
@@ -765,17 +765,19 @@ significance.
 - The paper used q-values instead of fdr/BH.
 
 Answer: Li et al. have multiple lists of differentially expressed genes
-unlike in this analysis where we have just one list. Also, for each
-comparison in the paper, there are far less genes that passed the
-q-value cut-off.
+unlike in this analysis where we have just one list. Also, in the paper,
+the total number of differentially expressed genes in all categories
+before and after log2fold change filter is higher than the total number
+in our analysis.
 
 Possible reasons for the discrepancies:
 
--   The paper generated DE genes for each time point, more like a simple
-    effect, but in this analysis, we look at the overall effect of
-    infection status across the entire time points(hpi) as continuous.
--   The paper included an added layer of filter when defining
-    significance: q-value \< 0.05 and a log2 fold change > 1
+-   The paper generated DE genes for each time point separately, more
+    like a simple effect, but in this analysis, we look at the overall
+    effect of infection status across the entire time points(hpi as
+    continuous).
+-   The paper corrected for multiple testing using q-value but we
+    adjusted using fdr.
 -   The paper adjusts for uninfected (mock infection) by subtracting
     counts (Infected-Non infected) instead of including infection status
     as a covariate.
