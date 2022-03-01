@@ -313,7 +313,6 @@ annot_cols <- list(
 # Plot a heatmap
 pheatmap(dat, color = hcols,
          border_color = NA,
-         cluster_cols = T, cluster_rows = T,
          annotation_col = data.frame(row.names = colnames(dat),
                                      Batch = dge$samples$Batch,
                                      Hours_post_infection = dge$samples$hpi,
